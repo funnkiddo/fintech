@@ -38,7 +38,9 @@ app.get("/authTest", auth, function (req, res) {
 app.get("/main", function (req, res) {
   res.render("main");
 });
-
+app.get("/balance", function (req, res) {
+  res.render("balance");
+});
 app.get("/authResult", function (req, res) {
   var authCode = req.query.code;
   console.log("인증코드 : ", authCode);
@@ -131,6 +133,74 @@ app.post("/login", function (req, res) {
           res.json("비밀번호가 다릅니다!");
         }
       }
+    }
+  });
+});
+app.post("/list", auth, function (req, res) {
+  var userId = req.decoded.userId;
+  var sql = "SELECT * FROM user WHERE id = ?";
+  connection.query(sql, [userId], function (error, results) {
+    if (error) {
+      console.error(error);
+      throw error;
+    } else {
+      console.log("list에서 조회한 개인 값:",results);
+      var option = {
+        method: "GET",
+        url: "https://testapi.openbanking.or.kr/v2.0/user/me",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: "Bearer " + results[0].accesstoken,
+        },
+        //form 형태는 form / 쿼리스트링 형태는 qs / json 형태는 json ***
+        qs: {
+          user_seq_no: results[0].userseqno,
+        },
+      };
+      request(option, function (error, response, body) {
+          var listResult = JSON.parse(body);
+          console.log(listResult);
+          res.json(listResult);
+        
+      });
+    }
+  });
+});
+
+app.post('/balance',auth, function(req,res){
+  var userId = req.decoded.userId;
+  var fin_use_num = req.body.fin_use_num
+  var random_num = Math.floor(Math.random()*1000000000)
+
+  console.log("유저아이디 , 핀테크 번호",userId,fin_use_num)
+
+  var sql = "SELECT * FROM user WHERE id = ?";
+  connection.query(sql, [userId], function (error, results) {
+    if (error) {
+      console.error(error);
+      throw error;
+    } else {
+      console.log("list에서 조회한 개인 값:",results);
+      var option = {
+        method: "GET",
+        url: "https://testapi.openbanking.or.kr/v2.0/account/balance/fin_num",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: "Bearer " + results[0].accesstoken,
+        },
+        //form 형태는 form / 쿼리스트링 형태는 qs / json 형태는 json ***
+        qs: {
+          bank_tran_id : "T991641610U"+random_num,
+          fintech_use_num : "199164161057885124706187",
+          tran_dtime : "20200716125600"
+        },
+      };
+      request(option, function (error, response, body) {
+          var listResult = JSON.parse(body);
+          console.log(listResult);
+          res.json(listResult);
+        
+      });
     }
   });
 });
