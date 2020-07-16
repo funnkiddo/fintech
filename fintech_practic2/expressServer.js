@@ -41,6 +41,9 @@ app.get("/main", function (req, res) {
 app.get("/balance", function (req, res) {
   res.render("balance");
 });
+app.get("/qrcode", function (req, res) {
+  res.render("qrcode");
+});
 app.get("/authResult", function (req, res) {
   var authCode = req.query.code;
   console.log("인증코드 : ", authCode);
@@ -196,6 +199,48 @@ app.post('/balance',auth, function(req,res){
         },
       };
       request(option, function (error, response, body) {
+          var balanceResult = JSON.parse(body);
+          console.log(balanceResult);
+          res.json(balanceResult);
+        
+      });
+    }
+  });
+});
+app.post('/transaction',auth, function(req,res){
+  var userId = req.decoded.userId;
+  var fin_use_num = req.body.fin_use_num
+  var random_num = Math.floor(Math.random()*1000000000)
+
+  console.log("유저아이디 , 핀테크 번호",userId,fin_use_num)
+
+  var sql = "SELECT * FROM user WHERE id = ?";
+  connection.query(sql, [userId], function (error, results) {
+    if (error) {
+      console.error(error);
+      throw error;
+    } else {
+      console.log("list에서 조회한 개인 값:",results);
+      var option = {
+        method: "GET",
+        url: "https://testapi.openbanking.or.kr/v2.0/account/transaction_list/fin_num",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: "Bearer " + results[0].accesstoken,
+        },
+        //form 형태는 form / 쿼리스트링 형태는 qs / json 형태는 json ***
+        qs: {
+          bank_tran_id : "T991641610U"+random_num,
+          fintech_use_num : "199164161057885124706187",
+          inquiry_type : "A",
+          inquiry_base : "D",
+          from_date : "20200101",
+          to_date : "20200716",
+          sort_order : "D",
+          tran_dtime : "20200716144000"
+        },
+      };
+      request(option, function (error, response, body) {
           var listResult = JSON.parse(body);
           console.log(listResult);
           res.json(listResult);
@@ -203,6 +248,7 @@ app.post('/balance',auth, function(req,res){
       });
     }
   });
+
 });
 
 app.listen(3000,function(){
