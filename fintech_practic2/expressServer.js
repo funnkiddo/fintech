@@ -44,6 +44,9 @@ app.get("/balance", function (req, res) {
 app.get("/qrcode", function (req, res) {
   res.render("qrcode");
 });
+app.get("/qrreader", function (req, res) {
+  res.render("qrreader");
+});
 app.get("/authResult", function (req, res) {
   var authCode = req.query.code;
   console.log("인증코드 : ", authCode);
@@ -250,7 +253,9 @@ app.post('/transaction',auth, function(req,res){
   });
 
 });
-
+app.post('/withdraw',function(req,res){
+  //출금 이체 request 요청 만들기 
+});
 app.listen(3000,function(){
   console.log("Example app listening at http://localhost:3000");
 });
