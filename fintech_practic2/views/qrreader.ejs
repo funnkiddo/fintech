@@ -301,7 +301,7 @@
       function comma(num) {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       }
-      var jwtToken = sessionStorage.getItem("ourToken");
+      var jwtToken = sessionStorage.getItem("ourtoken");
       console.log(qs, jwtToken);
       let scanner = new Instascan.Scanner({
         video: document.getElementById("preview"),

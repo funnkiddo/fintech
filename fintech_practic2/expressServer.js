@@ -47,6 +47,13 @@ app.get("/qrcode", function (req, res) {
 app.get("/qrreader", function (req, res) {
   res.render("qrreader");
 });
+app.get("/modal", function (req, res) {
+  res.render("modal");
+});
+app.get("/reservation", function (req, res) {
+  res.render("reservation");
+});
+
 app.get("/authResult", function (req, res) {
   var authCode = req.query.code;
   console.log("인증코드 : ", authCode);
@@ -250,13 +257,16 @@ app.post('/transaction',auth, function(req,res){
         
       });
     }
-  });
+  }); 
 
 });
+//거래 내역 확인 
 app.post("/withdraw", auth, function (req, res) {
   var userId = req.decoded.userId;
   var fin_use_num = req.body.fin_use_num;
-  console.log("유저 아이디, 핀테크번호 : ", userId, fin_use_num);
+  var to_fin_use_num = req.body.to_fin_use_num;
+  var amount = req.body.amount;
+  console.log("유저 아이디, 핀테크번호,입금할 핀테크 번호 : ", userId, fin_use_num, to_fin_use_num, amount);
 
   var random_num = Math.floor(Math.random()*1000000000)
 
@@ -298,8 +308,8 @@ app.post("/withdraw", auth, function (req, res) {
       };
       request(option, function (error, response, body) {
         console.log(body);
-        var countnum2 = Math.floor(Math.random() * 1000000000) + 1;
-        var transId2 = "T991641610U" + countnum2; //이용기과번호 본인것 입력
+        var countnum2 = Math.floor(Math.random() * 1000000000) ;
+        var transId2 = "T991641610U" + countnum2; //이용기관번호 본인것 입력
 
         var option = {
           method: "POST",
@@ -313,7 +323,7 @@ app.post("/withdraw", auth, function (req, res) {
           },
           json: {
             cntr_account_type: "N",
-            cntr_account_num: "123412341234",
+            cntr_account_num: "2726382927",
             wd_pass_phrase: "NONE",
             wd_print_content: "환불금액",
             name_check_option: "on",
@@ -329,18 +339,20 @@ app.post("/withdraw", auth, function (req, res) {
                 req_client_name: "황채연",
                 req_client_fintech_use_num: "199164161057885124706187",
                 req_client_num: "098757928",
-                transfer_purpose: "ST",
+                req_client_account_num: "2726382927",
+                transfer_purpose: "ST"
               },
             ],
           },
         };
         request(option, function (error, response, body) {
+          // console.log(response)
           console.log(body);
         });
       });
     }
   });
-});
+}); //출금 로직
 
 app.listen(3000, function () {
   console.log("Example app listening at http://localhost:3000");
