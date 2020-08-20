@@ -18,7 +18,7 @@
 	margin: 40px;
 	box-shadow: 10px 15px 20px rgba(0, 0, 0, .1);
 	display: grid;
-	grid-template-columns: 60% 40%;
+	grid-template-columns: 100% 0%;
 }
 
 .container-time {
@@ -31,7 +31,7 @@
 }
 .heading {
     color:#998100;
-	font-size: 35px;
+	font-size: 50px;
 	text-transform: uppercase;
 }
 
@@ -46,7 +46,7 @@
 	font-size: 20px;
 }
 .container-form {
-	padding: 180px 0;
+	padding: 150px 0;
 	margin: 0 auto;
 	color: #000;
 }
@@ -105,29 +105,27 @@ button{
 			border-radius: 6px;
 			cursor: pointer;
 		}
-
-
-.modal{
-		position: fixed;
-		top: 0; left: 0;
-		width: 100%; height: 100%;
-		display: flex;
-		justify-content: center;
-		align-items : center;
+		.modal{
+			position: fixed;
+			top: 0; left: 0;
+			width: 100%; height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items : center;
 		}
-.md_overlay {
-		background-color: rgba(0, 0, 0, 0.6);
-		width: 100%; height: 100%;
-		position: absolute;
+		.md_overlay {
+			background-color: rgba(0, 0, 0, 0.6);
+			width: 100%; height: 100%;
+			position: absolute;
 		}
-.md_content {
-		width: 20%;
-		position: relative;
-		padding: 50px 100px;
-		background-color: white;
-		text-align: center;
-		border-radius: 6px;
-		box-shadow: 0 10px 20px rgba(0,0,0,0.20), 0 6px 6px rgba(0, 0, 0, 0.20);
+		.md_content {
+			width: 20%;
+			position: relative;
+			padding: 50px 100px;
+			background-color: white;
+			text-align: center;
+			border-radius: 6px;
+			box-shadow: 0 10px 20px rgba(0,0,0,0.20), 0 6px 6px rgba(0, 0, 0, 0.20);
 		}
 		h1 {
 			margin:0; 
@@ -136,7 +134,7 @@ button{
 		.hidden {
 			display: none;
 		}
-	.modal_text { padding: 16px; }
+		.modal_text { padding: 16px; }
 
     </style>
 	<link rel="stylesheet" href="css/style.css">
@@ -147,85 +145,79 @@ button{
 
 	<div class="container">
 
-		<div class="container-time">
-				<h2 class="heading">Time Open</h2>
-				<h3 class="heading-days">Monday-Friday</h3>
-				<p style="color:black;">7am - 11am (breakfast)</p>
-				<p style="color:black;">11am - 10pm (lunch/dinner)</p>
-
-				<h3 class="heading-days">Saturday and sunday</h3>
-				<p style="color:black;">9am - 1am (breakfast)</p>
-				<p style="color:black;">1am - 10pm (lunch/dinner)</p>
-
-				<hr>
-
-				<h4 class="heading-phone">Call Us: (123) 45-45-456</h4>
-		</div>
+	
 		<!-- 여기까지가 검은색 반쪽  -->
 
 		<div class="container-form">
 				<form action="#">
-					<h2 class="heading heading-yellow" align = "center">예약하기</h2>
+					<h2 class="heading heading-yellow" align = "center">결제하기</h2>
 
 					<div class="form-field">
 						<p>이름</p>
-						<input type="text" id="Name" placeholder="이름">
+						<input type="text" placeholder="이름">
 					</div>
 					
 					<div class="form-field">
 						<p>이메일</p>
-						<input type="email" id="Email" placeholder="이메일">
-					</div>
-					<div class="form-field">
+						<input type="email" placeholder="이메일">
+                    </div>
+
+                    <div class="form-field">
 						<p>반려견/묘 이름</p>
-						<input type="email" id="Pet" placeholder="반려견/묘 이름">
-					</div>
+						<input type="text" placeholder="반려견/묘 이름">
+                    </div>
 
-					<div class="form-field">
+                    <div class="form-field">
 						<p>예약날짜</p>
-						<input type="date" id="Date">
-					</div>
-
-					<div class="form-field">
+						<input type="text" placeholder="예약날짜">
+                    </div>
+                    
+                    <div class="form-field">
 						<p>예약시간</p>
-						<input type="time" id="Time">
+						<input type="text" placeholder="예약시간">
 					</div>
 
 					<div class="form-field">
 						<p>미용종류</p>
-						<select name="select" id="Style">
+						<select name="select" id="#">
 							<option value="1">브로콜리컷</option>
 							<option value="2">얼굴컷</option>
 							<option value="3">베이비컷</option>
 							<option value="4">곰돌이컷</option>
 						</select>
-					</div>
-					<div class="form-field">
+                    </div>
+                    
+                    <div class="form-field">
+						<p>주의사항</p>
+						<input type="text" placeholder="우리 아이의 주의사항을 적어주세요">
+                    </div>
+
+                    <div class="form-field">
 						<p>가격</p>
-						<input type="text" id="Total">
+						<input type="text" placeholder="가격">
 					</div>
-					
-                    <button type="button" id="submitBtn" class="btn")>결제하기</button>
+                    
+                    <button type="button" id="PayBtn" class="btn">결제하기</button>
                     <div class="modal hidden">
                         <div class="md_overlay"></div>
                         <div class="md_content">
-                            <h1>예약하시겠습니까?</h1>
-                            <div class="modal_text" ></div>
-							<br><br>
-							<button type="button" id ="noBtn" class = "button" >X</button>
-							<button type="button" id ="yesBtn" class = "button" onclick="window.location.href='/payment'">O</button>
+                            <h1>결제 완료</h1>
+                            <div class="modal_text">
+                                결제 내용 
+                            </div>
+                            <button>확인</button>
                         </div>
+					<!-- <button class="btn">Submit</button> -->
 				</form>
 		</div>
 	</div>
-	<script type="text/javascript">
+    <script type="text/javascript">
 	
 		//필요한 엘리먼트들을 선택한다.
-		const openButton = document.getElementById("submitBtn");
+		const openButton = document.getElementById("PayBtn");
 		const modal = document.querySelector(".modal");
 		const overlay = modal.querySelector(".md_overlay");
 		const closeButton = modal.querySelector("button");
-		
 		//동작함수
 		const openModal = () => {
 			modal.classList.remove("hidden");
@@ -239,45 +231,5 @@ button{
 	
 	</script>
 
-
-	<!-- JQuery library file. requared all pages -->
-	<script src="js/jquery-3.2.1.min.js"></script>
-
-	<!-- Template global script file. requared all pages -->
-	<script src="js/global.script.js"></script>
-	<script>
-		$("#submitBtn").click(function(){
-			// #ajax 아이디 패스워드를 post 방식으로 '/reservation' 라우터에 데이터를 전송
-			var Name = $("#Name").val();
-			var Email = $("#Email").val();
-			var Pet = $("#Pet").val();
-			var Date = $("#Date").val();
-			var Time = $("#Time").val();
-			var Style = $("#Style").val();
-			var Total = $("#Total").val();
-
-			$('.modal_text').text("이름: " + Name+
-			"이메일: "+Email+"반려견/묘 이름: " + Name+ "예약날짜:"+Date+"\n"+"예약시간"+Time+"\n"+"미용 종류"+Style+"가격: " + Total)
-
-			$.ajax({
-			url: "/reservation",
-			type: "POST",
-			data: {
-				Name: Name,
-				Email: Email,
-				Pet : Pet,
-				Date: Date,
-				Time: Time,
-				Style: Style,
-				Total, Total
-			},
-			success: function (data) {
-				
-			},
-        });
-	})
-
-	
-		</script>
-	</body>
+</body>
 </html>
