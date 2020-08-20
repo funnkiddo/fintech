@@ -148,20 +148,37 @@ button{
 	<div class="container">
 
 		<div class="container-time">
-				<h2 class="heading">Time Open</h2>
-				<h3 class="heading-days">Monday-Friday</h3>
+				<h2 class="heading">상점이름1</h2>
+				<div class="swiper-wrapper" width="400" height="300" background-image> 
+					<img src="img/content/mainimg.png" width="400" height="300" id="mainImg">
+					<hr>
+				</div>
+
+				<div class="portfolio_div">
+					<div class="portfolio_images">
+								<div class="portfolio_images_visible">
+										<img src="img/content/cut1.png" width="90" height="90" id="img1" onclick="imgToggle()">
+										<img src="img/content/cut2.png" width="90" height="90" id="img2" onclick="imgToggle()">
+										<img src="img/content/cut3.png" width="90" height="90" id="img3" onclick="imgToggle()">
+								</div>					
+							</div>
+						</div>
+						<hr>
+
+				
+				<h1 class="heading-days">Monday-Friday</h1>
 				<p style="color:black;">7am - 11am (breakfast)</p>
 				<p style="color:black;">11am - 10pm (lunch/dinner)</p>
 
-				<h3 class="heading-days">Saturday and sunday</h3>
+				<h1 class="heading-days">Saturday and sunday</h1>
 				<p style="color:black;">9am - 1am (breakfast)</p>
 				<p style="color:black;">1am - 10pm (lunch/dinner)</p>
 
 				<hr>
 
-				<h4 class="heading-phone">Call Us: (123) 45-45-456</h4>
+				<h2 class="heading-phone">Call Us: (123) 4545-6789</h2>
 		</div>
-		<!-- 여기까지가 검은색 반쪽  -->
+
 
 		<div class="container-form">
 				<form action="#">
@@ -219,6 +236,24 @@ button{
 		</div>
 	</div>
 	<script type="text/javascript">
+
+var cnt = 1;
+		function imgToggle(){
+			var mainImg = document.getElementById("mainImg");
+			var img1 = document.getElementById("img1");
+			var img2 = document.getElementById("img2");
+			var img3 = document.getElementById("img3");
+
+			
+			if(img1){
+				img1.src="img/content/mainImg.png";
+				mainImg.src="img/content/cut1.png";
+			} else if(img2){
+				img2.src="img/content/mainImg.png";
+				img1.src="img/content/cut2.png";
+			}
+			cnt++;
+		}
 	
 		//필요한 엘리먼트들을 선택한다.
 		const openButton = document.getElementById("submitBtn");
