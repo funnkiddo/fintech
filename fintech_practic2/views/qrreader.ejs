@@ -285,6 +285,7 @@
     <!-- Template global script file. requared all pages -->
     <script src="js/global.script.js"></script>
     <script src="js/instascan.min.js"></script>
+    
     <script>
       function getQueryStringObject() {
         var a = window.location.search.substr(1).split("&");
@@ -297,19 +298,25 @@
         }
         return b;
       }
+
+
       var qs = getQueryStringObject();
       function comma(num) {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       }
-      var jwtToken = sessionStorage.getItem("ourtoken");
+
+      var jwtToken = sessionStorage.getItem("ourtoken"); 
       console.log(qs, jwtToken);
+      //Object "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsInVzZXJFbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE1OTgyNDY1MzIsImV4cCI6MTU5OTExMDUzMiwiaXNzIjoiZmludGVjaC5hZG1pbiIsInN1YiI6InVzZXIubG9naW4uaW5mbyJ9._K43xkLMkeDa3NTp9bf3fzs5m_U6OIOvQnS4QJC9NgA"
       let scanner = new Instascan.Scanner({
         video: document.getElementById("preview"),
       });
+
       var to_fin_use_num = undefined; // qr 코드로 부터 읽은 핀테크 번호
       scanner.addListener("scan", function (content) {
-        console.log(content);
+        console.log(content); //199164161057885124706187
         to_fin_use_num = content;
+        //그냥 하드코딩 하면 되는 부분
         $("#largePopup").show();
         $.ajax({
           url: "/list",
@@ -319,19 +326,19 @@
           },
           success: function (data) {
             console.log(data.res_list);
+            //0: {fintech_use_num: "199164161057885124700880", account_alias: "1234", bank_code_std: "097", bank_code_sub: "0000000", bank_name: "오픈은행", …}
+            //1: {fintech_use_num: "199164161057885124706187", account_al
             for (var i = 0; i < data.res_list.length; i++) {
               var element = data.res_list[i];
               console.log(element);
+         
               $("#accountList").append(
                 "<tr><td>" +
                   (i + 1) +
                   "</td><td>" +
                   element.account_alias +
                   "</td><td>" +
-                  "<button onclick=\"pay('" +
-                  element.fintech_use_num +
-                  "')\">결제하기</button>" +
-                  "</td></tr>"
+                  "<button onclick=\"pay('" + element.fintech_use_num + "')\">결제하기</button>" + "</td></tr>"
               );
             }
           },

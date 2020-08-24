@@ -138,6 +138,50 @@ button{
 		}
 	.modal_text { padding: 16px; }
 
+	a {
+		text-decoration:none; 
+		font-size:18px; 
+		color:#fff; 
+		display:block; 
+		width:100%; 
+		height:100%;
+	}
+
+	ul {list-style:none;}
+
+	li{
+		width:17%; 
+		height:30px; 
+		background: black; 
+		float:left; 
+		margin-right:10px; 
+		margin-top:20px;
+		margin-left:20px; 
+		border-radius:15px;
+	}
+
+	
+	iframe{
+		width: 450px;
+		height: 450px;
+		margin-right:10px; 
+		margin-top:20px; 
+		border:none;
+	}
+
+	img{
+		position: absolute; 
+		left:50%; top:50%; 
+	}
+
+	li a{
+		text-align:center;
+		border-radius:15px;
+	}
+	li a:hover{
+		color:#998100; 
+		background-color:bisque;
+	}
     </style>
 	<link rel="stylesheet" href="css/style.css">
 	<!-- Font -->
@@ -149,21 +193,22 @@ button{
 
 		<div class="container-time">
 				<h2 class="heading">상점이름1</h2>
-				<div class="swiper-wrapper" width="400" height="300" background-image> 
-					<img src="img/content/mainimg.png" width="400" height="300" id="mainImg">
-					<hr>
+				<div id = "wrap">
+					<div id = "food">
+						<ul>
+							<li><a href="img/content/cut1.png" target="photo">브로콜리컷</a></li>
+							<li><a href="img/content/cut2.png" target="photo">얼굴컷</a></li>
+							<li><a href="img/content/cut3.png" target="photo">베이비컷</a></li>
+							<li><a href="img/content/cut4.png" target="photo">곰돌이컷</a></li>
+						</ul>
+					</div>
+	
+					<div id="photo">
+						<iframe src="img/content/mainimg.png" width="450" height="450" name="photo" scrolling="no"></iframe>
+					</div>
 				</div>
 
-				<div class="portfolio_div">
-					<div class="portfolio_images">
-								<div class="portfolio_images_visible">
-										<img src="img/content/cut1.png" width="90" height="90" id="img1" onclick="imgToggle()">
-										<img src="img/content/cut2.png" width="90" height="90" id="img2" onclick="imgToggle()">
-										<img src="img/content/cut3.png" width="90" height="90" id="img3" onclick="imgToggle()">
-								</div>					
-							</div>
-						</div>
-						<hr>
+				<hr>
 
 				
 				<h1 class="heading-days">Monday-Friday</h1>
@@ -200,7 +245,7 @@ button{
 
 					<div class="form-field">
 						<p>예약날짜</p>
-						<input type="date" id="Date">
+						<input type="date" id="reservationDate">
 					</div>
 
 					<div class="form-field">
@@ -210,16 +255,16 @@ button{
 
 					<div class="form-field">
 						<p>미용종류</p>
-						<select name="select" id="Style">
-							<option value="1">브로콜리컷</option>
-							<option value="2">얼굴컷</option>
-							<option value="3">베이비컷</option>
-							<option value="4">곰돌이컷</option>
+						<select name="select" onchange="s1Change()" id="Style">
+							<option value="브로콜리컷">브로콜리컷</option>
+							<option value="얼굴컷">얼굴컷</option>
+							<option value="베이비컷">베이비컷</option>
+							<option value="곰돌이컷">곰돌이컷</option>
 						</select>
 					</div>
 					<div class="form-field">
 						<p>가격</p>
-						<input type="text" id="Total">
+						<input type="text" value="  " id="Total">
 					</div>
 					
                     <button type="button" id="submitBtn" class="btn")>결제하기</button>
@@ -234,26 +279,26 @@ button{
                         </div>
 				</form>
 		</div>
+
 	</div>
 	<script type="text/javascript">
 
-var cnt = 1;
-		function imgToggle(){
-			var mainImg = document.getElementById("mainImg");
-			var img1 = document.getElementById("img1");
-			var img2 = document.getElementById("img2");
-			var img3 = document.getElementById("img3");
-
-			
-			if(img1){
-				img1.src="img/content/mainImg.png";
-				mainImg.src="img/content/cut1.png";
-			} else if(img2){
-				img2.src="img/content/mainImg.png";
-				img1.src="img/content/cut2.png";
-			}
-			cnt++;
+	function s1Change()
+	{
+		var sel = document.getElementById("Style");
+		if( sel.value == "브로콜리컷" ) {
+			Total.value="8000";
 		}
+		else if( sel.value == "얼굴컷" ) {
+			Total.value="9000";
+		}
+		else if( sel.value == "베이비컷" ) {
+			Total.value="10000";
+		}
+		else if( sel.value == "곰돌이컷" ) {
+			Total.value="11000";
+		}
+	}
 	
 		//필요한 엘리먼트들을 선택한다.
 		const openButton = document.getElementById("submitBtn");
@@ -281,18 +326,19 @@ var cnt = 1;
 	<!-- Template global script file. requared all pages -->
 	<script src="js/global.script.js"></script>
 	<script>
+
 		$("#submitBtn").click(function(){
 			// #ajax 아이디 패스워드를 post 방식으로 '/reservation' 라우터에 데이터를 전송
 			var Name = $("#Name").val();
 			var Email = $("#Email").val();
 			var Pet = $("#Pet").val();
-			var Date = $("#Date").val();
+			var reservationDate = $("#reservationDate").val();
 			var Time = $("#Time").val();
 			var Style = $("#Style").val();
 			var Total = $("#Total").val();
 
-			$('.modal_text').text("이름: " + Name+
-			"이메일: "+Email+"반려견/묘 이름: " + Name+ "예약날짜:"+Date+"\n"+"예약시간"+Time+"\n"+"미용 종류"+Style+"가격: " + Total)
+			$('.modal_text').html( "이름: " + Name+"<br/>"+
+			"이메일: "+Email+"<br/>"+"반려견/묘 이름: " + Pet+"<br/>"+"예약날짜: "+reservationDate+"<br/>"+"예약시간: "+Time+"<br/>"+"미용 종류: "+Style+"<br/>"+"가격: " + Total )
 
 			$.ajax({
 			url: "/reservation",
@@ -301,18 +347,27 @@ var cnt = 1;
 				Name: Name,
 				Email: Email,
 				Pet : Pet,
-				Date: Date,
+				Date: reservationDate,
 				Time: Time,
 				Style: Style,
-				Total, Total
+				Total: Total
 			},
 			success: function (data) {
-				
+				alert("success!");
+				localStorage.setItem('reservationData', data)
+				console.log(data)
 			},
-        });
-	})
+		});
+		sessionStorage.setItem('Name', Name);
+		sessionStorage.setItem('Email', Email);
+		sessionStorage.setItem('Pet', Pet);
+		sessionStorage.setItem('reservationDate', reservationDate);
+		sessionStorage.setItem('Time', Time);
+		sessionStorage.setItem('Style', Style);
+		sessionStorage.setItem('Total', Total);
+		
 
-	
+	})
 		</script>
 	</body>
 </html>

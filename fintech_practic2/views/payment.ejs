@@ -154,64 +154,82 @@ button{
 
 					<div class="form-field">
 						<p>이름</p>
-						<input type="text" placeholder="이름">
+						<input type="text" placeholder="이름" id="Name" readonly>
 					</div>
 					
 					<div class="form-field">
 						<p>이메일</p>
-						<input type="email" id="Email" placeholder="이메일">
+						<input type="email" placeholder="이메일" id="Email" readonly>
                     </div>
 
                     <div class="form-field">
 						<p>반려견/묘 이름</p>
-						<input type="text"  id="Pet" placeholder="반려견/묘 이름">
+						<input type="text" placeholder="반려견/묘 이름" id="Pet" readonly>
                     </div>
 
                     <div class="form-field">
 						<p>예약날짜</p>
-						<input type="text" id="Date" placeholder="예약날짜">
+						<input type="text" placeholder="예약날짜" id="reservationDate" readonly>
                     </div>
                     
                     <div class="form-field">
 						<p>예약시간</p>
-						<input type="text" id="Time" placeholder="예약시간">
+						<input type="text" placeholder="예약시간" id="Time" readonly>
 					</div>
 
 					<div class="form-field">
 						<p>미용종류</p>
-						<select name="select" id="Style">
-							<option value="1">브로콜리컷</option>
-							<option value="2">얼굴컷</option>
-							<option value="3">베이비컷</option>
-							<option value="4">곰돌이컷</option>
-						</select>
+						<input type="text" placeholder="미용종류" id="Style" readonly>
                     </div>
                     
                     <div class="form-field">
 						<p>주의사항</p>
-						<input type="text" id = "Caution"placeholder="우리 아이의 주의사항을 적어주세요">
+						<input type="text" placeholder="우리 아이의 주의사항을 적어주세요">
                     </div>
 
                     <div class="form-field">
 						<p>가격</p>
-						<input type="text" id="Total" placeholder="가격">
+						<input type="text" placeholder="가격" id="amount" readonly>
+
 					</div>
                     
-                    <button type="button" id="PayBtn" class="btn">결제하기</button>
+                    <button type="button" id="PayBtn" class="btn" onclick="pay()">결제하기</button>
                     <div class="modal hidden">
                         <div class="md_overlay"></div>
                         <div class="md_content">
-                            <h1>결제 완료</h1>
-                            <div class="modal_text">
-                                결제 내용 
-                            </div>
-                            <button>확인</button>
+							<h1>결제 완료</h1>
+                            <section class="payment" id="payment"></section>
+							<button id="PayBtn2" onclick="window.location.href='/complete'">확인</button>
                         </div>
 					<!-- <button class="btn">Submit</button> -->
 				</form>
 		</div>
 	</div>
-    <script type="text/javascript">
+
+
+	<!-- JQuery library file. requared all pages -->
+	<script src="js/jquery-3.2.1.min.js"></script>
+
+	<!-- Template global script file. requared all pages -->
+	<script src="js/global.script.js"></script>
+	<script type="text/javascript">
+	
+		var userName = sessionStorage.getItem('Name');
+		var userEmail = sessionStorage.getItem('Email');
+		var userPet = sessionStorage.getItem('Pet');
+		var userDate = sessionStorage.getItem('reservationDate');
+		var userTime = sessionStorage.getItem('Time');
+		var userStyle = sessionStorage.getItem('Style');
+		var userTotal = sessionStorage.getItem('Total');
+		
+		Name.value=userName;
+		Email.value=userEmail;
+		Pet.value=userPet;
+		reservationDate.value=userDate;
+		Time.value=userTime;
+		Style.value=userStyle;
+		amount.value=userTotal;
+
 	
 		//필요한 엘리먼트들을 선택한다.
 		const openButton = document.getElementById("PayBtn");
@@ -228,7 +246,75 @@ button{
 		//클릭 이벤트
 		openButton.addEventListener("click", openModal);
 		closeButton.addEventListener("click", closeModal);
+
+
+		var userEmail = "gpqls1458@naver.com";
+        var userPassword = "1234";
+        $.ajax({
+          url: "/login",
+          type: "POST",
+          data: {
+            userEmail: userEmail,
+            userPassword: userPassword,
+          },
+          success: function (data) {
+            console.log(data)
+			sessionStorage.setItem('ourToken', data)
+			//가져온 데이터를 ourToken이라는 변수에 저장
+          },
+		});
 	
+
+	function getQueryStringObject() {
+        var a = window.location.search.substr(1).split("&");
+        if (a == "") return {};
+        var b = {};
+        for (var i = 0; i < a.length; ++i) {
+          var p = a[i].split("=", 2);
+          if (p.length == 1) b[p[0]] = "";
+          else b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+        }
+        return b;
+     	 }
+      	var qs = getQueryStringObject();
+		  
+		function comma(num) {
+       	 return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      	}
+      
+      	var jwtToken = sessionStorage.getItem("ourToken");
+      	console.log(qs, jwtToken);
+
+	function pay(){
+		var useFintechNo = "199164147057885100705315";
+		var to_fin_use_num = "8518142015";
+		//var jwtToken = sessionStorage.getItem("ourToken");
+     	//console.log(qs, jwtToken);
+		
+        $.ajax({
+          url: "/withdraw",
+          type: "POST",
+          headers: {
+            ourtoken: jwtToken,
+          },
+          data: {
+            fin_use_num: useFintechNo,
+            to_fin_use_num: to_fin_use_num,
+            amount: $("#amount").val(),
+          },
+          success: function (data) {
+			console.log(data);
+			$("#payment").append(
+				'<div class="modal_text">'+
+					data.dps_account_holder_name+'님의 계좌 '+ data.fintech_use_num+'에서'+data.tran_amt+'가 출금되었습니다.'+
+                '</div>'
+			)
+          },
+        });
+	  }
+	  //check.value=;
+
+
 	</script>
 
 </body>

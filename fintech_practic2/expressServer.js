@@ -47,12 +47,7 @@ app.get("/qrcode", function (req, res) {
 app.get("/qrreader", function (req, res) {
   res.render("qrreader");
 });
-app.get("/modal", function (req, res) {
-  res.render("modal");
-});
-app.get("/reservation", function (req, res) {
-  res.render("reservation");
-});
+
 
 app.get("/authResult", function (req, res) {
   var authCode = req.query.code;
@@ -300,7 +295,6 @@ app.post("/withdraw", auth, function (req, res) {
           req_client_account_num:"124412341234",
           req_client_num:"1100760564",
           transfer_purpose:"ST",
-          // sub_frnc_business_num:"1234567890",
           recv_client_name:"황채연",
           recv_client_bank_code:"097",
           recv_client_account_num:"0987579284",
